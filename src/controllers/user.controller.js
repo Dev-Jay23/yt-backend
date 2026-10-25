@@ -4,6 +4,7 @@ import { User } from "../models/user.model.js"
 import { uploadOnCloudinary } from "../utils/cloudinary.js"
 import { ApiResponse } from "../utils/apiResponse.js";
 import jwt from "jsonwebtoken"
+import mongoose from "mongoose";
 
 
 const generateAccessAndRefreshToken = async (userId) => {
@@ -104,8 +105,7 @@ const loginUser = asyncHandler(async (req, res) => {
     // send cookie 
 
     const { username, email, password } = req.body || {}
-
-    console.log("first", email, password)
+    // console.log("first", email, password)
     if (!(username || email)) {
         throw new ApiError(400, "username or email is required")
     }
@@ -237,10 +237,10 @@ const getCurrentUser = asyncHandler(async (req, res) => {
         .json(new ApiResponse(200, req.user, "Current user fetched successfully"))
 })
 
-const updateCurrentUser = asyncHandler(async (req, res) => {
+const updateAccountDetails = asyncHandler(async (req, res) => {
     const { fullName, email } = req.body || {}
 
-    if ([fullName, email].some((field) => field?.trim() === "")) {
+    if (!fullName || !email) {
         throw new ApiError(400, "All fields are required")
     }
 
@@ -255,6 +255,7 @@ const updateCurrentUser = asyncHandler(async (req, res) => {
         { new: true }
     ).select("-password")
 
+    // console.log("first", user)
 
     return res
         .status(200)
@@ -461,7 +462,7 @@ export {
     refreshAccessToken,
     changeCurrentPassword,
     getCurrentUser,
-    updateCurrentUser,
+    updateAccountDetails,
     updateUserAvatar,
     updateUserCoverImage,
     getUserChannelProfile,

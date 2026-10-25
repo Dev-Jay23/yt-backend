@@ -8,7 +8,7 @@ import {
     loginUser,
     refreshAccessToken,
     registerUser,
-    updateCurrentUser,
+    updateAccountDetails,
     updateUserAvatar,
     updateUserCoverImage
 } from "../controllers/user.controller.js";
@@ -41,7 +41,7 @@ router.route("/logout").post(verifyJWT, loggedOutUser)
 router.route("/refresh-token").post(refreshAccessToken)
 router.route("/changepassword").post(verifyJWT, changeCurrentPassword)
 router.route("/current-user").get(verifyJWT, getCurrentUser)
-router.route("/update-account").patch(verifyJWT, updateCurrentUser)
+router.route("/update-account").patch(verifyJWT, updateAccountDetails)
 router.route("/update-avatar").patch(verifyJWT, upload.single("avatar"), updateUserAvatar)
 router.route("/update-cover-image").patch(verifyJWT, upload.single("coverimage"), updateUserCoverImage)
 router.route("/channel/:username").get(verifyJWT, getUserChannelProfile)
